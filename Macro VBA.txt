@@ -1,0 +1,608 @@
+Sub Convergint_Mex_Proposal()
+'Author: Dyanko Cisneros Mendoza'
+'Departmen: AV Pre-Sales'
+'Empresa: Convergint México'
+'Fecha: 2-Mayo-2024'
+'Versión: 1.0'
+
+'Disable screen refresh
+Application.ScreenUpdating = False
+
+'Select language for Proposal'
+Dim language As String
+
+'Open Language Selection Popup
+Dim Pregunta As Integer
+Pregunta = MsgBox("Traducir propuesta en Inglés:", vbYesNo + vbInformation, "Convergint México")
+Select Case Pregunta
+    Case Is = 6 'Yes
+        language = "Eng"
+    Case Is = 7 'No
+        language = "Esp"
+    Case Else   'Cancel
+End Select
+
+'Show hidden columns'
+ActiveWindow.DisplayHeadings = True
+
+'Variable declaration
+Dim ID, Fecha, Offer, Presented, Salesman, Phone, Email As String
+Dim Client, Contact, Address, Commercial_Header, Money As String
+Dim Item_Desc, Item_Type, Item_Brand, Item_Model, Item_Qty, Item_Subtotal As String
+Dim validity, payment_terms As String
+Dim Total_Group As String
+Dim customer, project, version As String
+
+'Information to name of the pdf document to print'
+customer = ActiveSheet.Range("I11").value
+project = ActiveSheet.Range("D25").value
+version = "v1.0"
+
+'Remove Seal Telecom Logo from Convergint Logo
+If ActiveSheet.Range("C4").value = "" Then
+    '---
+    ActiveSheet.Shapes.Range(Array("Picture 1")).Select
+    Selection.ShapeRange.LockAspectRatio = msoFalse
+    Selection.ShapeRange.ScaleWidth 0.6695848911, msoFalse, msoScaleFromTopLeft
+    Selection.ShapeRange.PictureFormat.Crop.PictureWidth = 285
+    Selection.ShapeRange.PictureFormat.Crop.PictureHeight = 75
+    Selection.ShapeRange.PictureFormat.Crop.PictureOffsetX = 47
+    Selection.ShapeRange.PictureFormat.Crop.PictureOffsetY = 0
+    Range("C9:L9").Select
+    '---
+    ActiveSheet.Range("C4").value = 1
+End If
+
+'Assign value of the variables according to the selected language
+If language = "Eng" Then
+    ID = "OPPORTUNITY ID:"
+    Fecha = "DATE:"
+    ActiveSheet.Range("J3").value = Format(Now(), "mmmm/dd/yyyy")
+    '------'
+    Offer = "Commercial Offer"
+    Presented = "PRESENTED BY:"
+    Salesman = "Sales Person"
+    Phone = "Phone:"
+    Email = "Email:"
+    '------'
+    Client = "Client:"
+    Contact = "Contact:"
+    Address = "Address:"
+    '------'
+    Commercial_Header = "On behalf of the Convergint global network, I would like to personally thank you for providing us the opportunity to present this proposal that addresses your needs in both solutions and services. We are confident that this costeffective proposal describes the comprehensive and customized solution to meet your current and future needs. As your single point of contact, please do not hesitate to contact me if you have any additional questions. Thank you again for trusting Convergint as your partner."
+    '------'
+    Money = "CURRENCY:"
+    '------'
+    Item_Desc = "Description"
+    Item_Type = "Type"
+    Item_Brand = "Manufacturer"
+    Item_Model = "Model"
+    Item_Qty = "Qty."
+    Item_Subtotal = "$ Sub-Total"
+    Total_Group = "Total of Group"
+    '------'
+    validity = "30 (thirty) days"
+    payment_terms = "50% against Purchase Order, 50% upon completion of the project"
+    '------'
+    ReemplazarPalabras "Precio sin IVA", "Price without IVA"
+    ReemplazarPalabras "Total con IVA", "Price with IVA"
+    ReemplazarPalabras "CONDICIONES COMERCIALES", "COMMERCIAL TERMS AND CONDITIONS"
+    ReemplazarPalabras "Venta", "Sale"
+    ReemplazarPalabras "TOTAL OFERTA:", "TOTAL OFFER:"
+    ReemplazarPalabras "Impuestos incluidos", "Taxes Included"
+    ReemplazarPalabras "DESCRIPCION DEL SERVICIO PROPUESTO", "DESCRIPTION OF THE PROPOSED SERVICE"
+    ReemplazarPalabras "DESCRIPCIÓN DEL SERVICIO PROPUESTO", "DESCRIPTION OF THE PROPOSED SERVICE"
+    ReemplazarPalabras "TIPO: HW=HARDWARE / SW=SOFTWARE  / SV=SERVICE", "TYPE: HW=HARDWARE / SW=SOFTWARE / SV=SERVICE"
+    ReemplazarPalabras "TIEMPO DE ENTREGA", "LEAD TIME"
+    ReemplazarPalabras "POR CONFIRMAR", "To be defined"
+    ReemplazarPalabras "CONDICIONES DE PAGO: ", "TERMS OF PAYMENT:"
+    ReemplazarPalabras "DE COMUN ACUERDO", "To be defined"
+    '------'
+    ReemplazarPalabras "VALIDEZ:", "VALIDITY:"
+    ReemplazarPalabras "15 DIAS", "30 Days"
+    ReemplazarPalabras "30 DÍAS", "30 Days"
+    ReemplazarPalabras "INCOTERMS:", "INCOTERMS"
+    ReemplazarPalabras "OFICINAS DE CLIENTE", "Delivered at the customer offices"
+    ReemplazarPalabras "GARANTÍA", "WARRANTY"
+    ReemplazarPalabras "Original del Fabricante", "Manufacturer's Original"
+    ReemplazarPalabras "COMENTARIOS", "COMMENTS"
+    ReemplazarPalabras "Este presupuesto se rige por los Términos y Condiciones de venta de Seal Telecom incluyendo todas las exclusiones de garantía, renuncias y limitaciones de responsabilidad.", "This quotation is governed by Convergint México Terms and Conditions of Sale including all warranty exclusions, disclaimers and limitations of responsibility."
+    ReemplazarPalabras "* Forma de pago: 30 días a contar de fecha de factura.", ""
+    
+    find_replace "infraestructura", "* No changes or cancellations will be accepted after receipt of purchase order." & vbCrLf & _
+                        "* Prices subject to change if the manufacturer modifies its price lists." & vbCrLf & _
+                        "* To process any order we need the following information from the end user: Company, RFC, Contact Person, Phone, E-mail and Address." & vbCrLf & _
+                        "* Any additional infrastructure needed must be requested to our company as a complementary offer." & vbCrLf & _
+                        "* We do not consider existing equipment as spare parts or repair of existing equipment." & vbCrLf & _
+                        "* Services will be carried out during business hours." & vbCrLf & _
+                        "* Product Delivery Times may vary according to Manufacturer stock and are subject to change without notice." & vbCrLf & _
+                        "* Validity of this proposal: " & validity & vbCrLf & _
+                        "* Invoicing: " & payment_terms & vbCrLf & _
+                        "* Required services not included within the scope will be quoted and invoiced separately." & vbCrLf & _
+                        "* Failure to pay any of the amounts due by the Employer by the due date shall result in late payment charges until the date of actual payment." & vbCrLf & _
+                        "* If at the date of acceptance of the Proposal the exchange rate had suffered a variation equal to or greater than 5% versus that considered in this proposal; CONVERGINT shall update the proposal considering the exchange rate in effect at the date of acceptance" & vbCrLf & _
+                        "* Any material, equipment, software or service not provided by CONVERGINT that directly influences the solution under CONVERGINT's guarantee" & vbCrLf & _
+                        "* All products have a manufacturer's warranty of 12 (twelve) months from the confirmation of the arrival of the equipment at the Convergint site or warehouse and the services have a warranty of 90 (ninety) days, counting from the issuance of the acceptance period for the delivery of the project, addressing manufacturing defects and problems when installing and configuring the solution."
+    
+    ReemplazarPalabras "Total do Grupo", "Total of Group"
+    ReemplazarPalabras "Total del Grupo", "Total of Group"
+
+Else 'Spanish
+    ID = "ID OPORTUNIDAD:"
+    Fecha = "FECHA:"
+    ActiveSheet.Range("J3").value = Format(Now(), "dd/mm/yyyy")
+    '------'
+    Offer = "Propuesta Económica"
+    Presented = "PRESENTADO POR:"
+    Salesman = "Comercial"
+    Phone = "Teléfono:"
+    Email = "Correo:"
+    '------'
+    Client = "Cliente:"
+    Contact = "Contacto:"
+    Address = "Dirección:"
+    '------'
+    Commercial_Header = "En nombre de la red global de Convergint, me gustaría agradecerle personalmente por brindarnos la oportunidad de presentar esta propuesta que aborda sus necesidades en soluciones de AV y sus componentes. Estamos seguros de que esta propuesta económica describe la solución integral y personalizada para satisfacer sus necesidades actuales y futuras.Como su único punto de contacto, no dude en ponerse en contacto conmigo si tiene alguna pregunta adicional. Gracias nuevamente por confiar en Convergint como su socio."
+    '------'
+    Money = "MONEDA:"
+    '------'
+    Item_Desc = "Descripción"
+    Item_Type = "Tipo"
+    Item_Brand = "Marca"
+    Item_Model = "Modelo"
+    Item_Qty = "Qtd."
+    Item_Subtotal = "$ Sub-Total"
+    Total_Group = "Total del Grupo"
+    '------'
+    validity = "30 (treinta) días"
+    payment_terms = "50% contra Orden de Compra, 50% al finalizar la implementación del proyecto."
+    '------'
+    ReemplazarPalabras "Price without IVA", "Precio sin IVA"
+    ReemplazarPalabras "Price with IVA", "Total con IVA"
+    ReemplazarPalabras "COMMERCIAL TERMS AND CONDITIONS", "CONDICIONES COMERCIALES"
+    ReemplazarPalabras "Sale", "Venta"
+    ReemplazarPalabras "TOTAL OFFER:", "TOTAL OFERTA:"
+    ReemplazarPalabras "Taxes Included", "Impuestos incluidos"
+    ReemplazarPalabras "DESCRIPTION OF THE PROPOSED SERVICE", "DESCRIPCIÓN DEL SERVICIO PROPUESTO"
+    ReemplazarPalabras "TYPE: HW=HARDWARE / SW=SOFTWARE / SV=SERVICE", "TIPO: HW=HARDWARE / SW=SOFTWARE  / SV=SERVICE"
+    ReemplazarPalabras "LEAD TIME", "TIEMPO DE ENTREGA"
+    ReemplazarPalabras "To be defined", "POR CONFIRMAR"
+    ReemplazarPalabras "TERMS OF PAYMENT:", "CONDICIONES DE PAGO:"
+    ReemplazarPalabras "To be defined", "DE COMUN ACUERDO"
+    '------'
+    ReemplazarPalabras "VALIDITY:", "VALIDEZ:"
+    ReemplazarPalabras "15 DIAS", "30 DÍAS"
+    ReemplazarPalabras "30 Days", "30 DÍAS"
+    ReemplazarPalabras "INCOTERMS:", "INCOTERMS"
+    ReemplazarPalabras "Delivered at the customer offices", "OFICINAS DE CLIENTE"
+    ReemplazarPalabras "WARRANTY", "GARANTÍA"
+    ReemplazarPalabras "Manufacturer's Original", "Original del Fabricante"
+    ReemplazarPalabras "COMMENTS", "COMENTARIOS"
+    ReemplazarPalabras "This quotation is governed by Convergint Terms and Conditions of Sale including all warranty exclusions, disclaimers and limitations of responsibility.", "Este presupuesto se rige por los Términos y Condiciones de venta de Seal Telecom incluyendo todas las exclusiones de garantía, renuncias y limitaciones de responsabilidad."
+    ReemplazarPalabras "* Forma de pago: 30 días a contar de fecha de factura.", ""
+        
+    find_replace "infrastructure", "* No se aceptan cambios ni cancelaciones después de recibida la orden de compra." & vbCrLf & _
+                        "* Precios sujetos a cambio cuando el fabricante modifique sus listas de precios." & vbCrLf & _
+                        "* Para procesar cualquier pedido necesitamos los siguientes datos del usuario final: Empresa, RFC, Persona de Contacto, Teléfono, E-mail y Dirección." & vbCrLf & _
+                        "* Cualquier infraestructura adicional necesaria debe solicitarse a nuestra empresa como complemento." & vbCrLf & _
+                        "* No consideramos repuestos de equipos o reparación de equipo existentes." & vbCrLf & _
+                        "* Los servicios se llevarán a cabo durante el horario comercial." & vbCrLf & _
+                        "* Los Plazos de Entrega de Productos puede variar según stock del Fabricante y cambiar sin previo aviso." & vbCrLf & _
+                        "* Validez de esta propuesta: " & validity & vbCrLf & _
+                        "* Facturación: " & payment_terms & vbCrLf & _
+                        "* Datos de Pago:" & vbCrLf & _
+                        "* Los servicios requeridos que no estén incluidos dentro del alcance, serán cotizados y facturados en forma separada." & vbCrLf & _
+                        "* El no pago de cualquiera de los valores debidos por la Contratante en el plazo de vencimiento implicará en el cargo de cargas moratorias, hasta la fecha del efectivo pago." & vbCrLf & _
+                        "* Si a la fecha de aceptación de la Propuesta el tipo de cambio hubiere sufrido una variación igual o mayor a un 5% versus el considerado en esta propuesta; CONVERGINT actualizará la propuesta considerando el tipo de cambio vigente a la fecha de aceptación." & vbCrLf & _
+                        "* Cualquier material, equipo, software o servicio no proporcionado por CONVERGINT que influya directamente en la solución bajo la garantía de CONVERGINT;" & vbCrLf & _
+                        "* Todos los productos cuentan con una garantía del fabricante de 12 (doce) meses a partir de la confirmación de la llegada de los equipos a sitio o bodega de convergint y los servicios cuentan con una garantía de 90 (noventa) días, a contar desde la emisión del plazo de aceptación de la entrega del proyecto, atendiendo los defectos de fabricación y problemas al instalar y configurar la solución."
+    
+    ReemplazarPalabras "Total do Grupo", "Total del Grupo"
+    ReemplazarPalabras "Total of Group", "Total del Grupo"
+
+End If 'Spanish Language'
+
+    'Encabezado'
+    ActiveSheet.Range("I2").value = ID
+    ActiveSheet.Range("I3").value = Fecha
+    
+    'Commercial Offer Header'
+    ActiveSheet.Range("C9").value = Offer
+    ActiveSheet.Range("C11").value = Presented
+    ActiveSheet.Range("C12").value = Salesman
+    ActiveSheet.Range("C13").value = Phone
+    ActiveSheet.Range("C14").value = Email
+    '------'
+    ActiveSheet.Range("H11").value = Client
+    ActiveSheet.Range("H12").value = Contact
+    ActiveSheet.Range("H13").value = Phone
+    ActiveSheet.Range("H14").value = Email
+    '------'
+    ActiveSheet.Range("C17").value = Commercial_Header
+    '------'
+    ActiveSheet.Range("C18").value = ""
+    ActiveSheet.Range("C21").value = "CONVERGINT MÉXICO"
+    ActiveSheet.Range("J24").value = Fecha
+    ActiveSheet.Range("K24").value = Money
+    '------'
+    ActiveSheet.Range("E28").value = Item_Desc
+    ActiveSheet.Range("F28").value = Item_Type
+    ActiveSheet.Range("G28").value = Item_Brand
+    ActiveSheet.Range("H28").value = Item_Model
+    ActiveSheet.Range("I28").value = Item_Qty
+    ActiveSheet.Range("L28").value = Item_Subtotal
+    '------'
+    
+    '------Customer Info'
+    ActiveSheet.Range("I3:K3").Font.Bold = True
+    ActiveSheet.Range("C11:L17").Font.Size = 11
+    
+    'Cancel bold text to all ID values on Colum'
+    ActiveSheet.Range("I11:I15").Font.Bold = False
+    
+    'Apply format'
+    If ActiveSheet.Range("C5").value = "" Then
+        '------'
+        ActiveSheet.Range("H15").Copy
+        ActiveSheet.Range("H14").PasteSpecial xlPasteAll
+        ActiveSheet.Range("H15").value = ""
+        
+        '------'
+        ActiveSheet.Range("I15:K15").Copy
+        ActiveSheet.Range("I14:K14").PasteSpecial xlPasteAll
+        ActiveSheet.Range("I15:K15").value = ""
+        '------'
+        ActiveSheet.Range("C5").value = 1
+        
+        If language = "Eng" Then
+            ActiveSheet.Range("H14").value = "Email"
+        Else
+            ActiveSheet.Range("H14").value = "Correo"
+        End If
+    End If
+    
+    '------Item Colum'
+    ActiveSheet.Columns("C:C").Font.Bold = True
+    
+    'Apply Left Alignment to Columns'
+    ActiveSheet.Columns("D:D").HorizontalAlignment = xlLeft 'P/N
+    ActiveSheet.Columns("G:G").HorizontalAlignment = xlLeft 'Manufacturer
+    ActiveSheet.Columns("H:H").HorizontalAlignment = xlLeft 'Model
+    
+    'Apply Width Aufit Text Alignment to Columns'
+    ActiveSheet.Columns("D:D").AutoFit 'P/N
+    ActiveSheet.Columns("G:G").AutoFit 'Manufacturer
+    ActiveSheet.Columns("H:H").AutoFit 'Model
+    
+    'Apply format to items Row'
+    ActiveSheet.Range("C28:L28").Font.Bold = True
+    ActiveSheet.Range("C28:L28").HorizontalAlignment = xlCenter
+      
+    If ActiveSheet.Range("I13").value = 0 Then 'Customer Email Text
+       ActiveSheet.Range("I13:K13").value = ""
+    End If
+    
+    'Apply format to all items price numeric values
+    FormatColumnsJKL
+    
+    'Apply format to Text'
+    AplicarNegritaACondicionesComerciales
+    FormatGroupTextLabel
+    
+    'Date Text'
+    ActiveSheet.Range("J3").Font.Bold = False
+    
+    'Delete Consolidated Cells'
+    
+    '------Sales Person EMail'
+    ActiveSheet.Range("D14:F14").Font.Color = vbBlue
+    ActiveSheet.Range("D14:F14").Font.Underline = xlUnderlineStyleSingle
+    '------Client Person EMail'
+    ActiveSheet.Range("I14:K14").Font.Color = vbBlue
+    ActiveSheet.Range("I14:K14").Font.Underline = xlUnderlineStyleSingle
+
+
+    'Open PDF Print Selection Popup
+    Dim Pregunta2 As Integer
+    Pregunta2 = MsgBox("¿Imprimir documento en pdf?", vbYesNoCancel + vbInformation, "Convergint México")
+    Select Case Pregunta2
+        Case Is = 6
+            Print_PDF language, customer, project, version
+            'Final message'
+            MsgBox ("Proceso terminado, favor de revisar condiciones comerciales")
+        Case Is = 7
+            'Final message'
+            MsgBox ("Proceso terminado, favor de revisar condiciones comerciales")
+        Case Else
+    End Select
+
+'Reactivate screen refresh
+Application.ScreenUpdating = True
+
+End Sub
+
+Sub ReemplazarPalabras(palabraBuscar As String, palabraReemplazar As String)
+    Dim ws As Worksheet
+    Dim rng As Range
+    Dim cell As Range
+
+    ' Referenciar la hoja activa
+    Set ws = ActiveSheet
+
+    ' Definir el rango de búsqueda en toda la hoja
+    Set rng = ws.UsedRange
+
+    ' Desactivar actualizaciones de pantalla para mejorar el rendimiento
+    Application.ScreenUpdating = False
+
+    ' Recorrer cada celda en el rango definido
+    For Each cell In rng
+        ' Verificar si la celda contiene la palabra a buscar
+        If InStr(1, cell.value, palabraBuscar, vbTextCompare) > 0 Then
+            ' Reemplazar la palabra
+            cell.value = Replace(cell.value, palabraBuscar, palabraReemplazar)
+        End If
+    Next cell
+
+    ' Activar actualizaciones de pantalla
+    Application.ScreenUpdating = True
+End Sub
+
+Sub FormatColumnsJKL()
+    Dim ws As Worksheet
+    Dim rng As Range
+    Dim cell As Range
+    Dim positiveValues As Range
+    Dim negativeValues As Range
+    Dim value As Double
+
+    ' Reference the active sheet
+    Set ws = ActiveSheet
+
+    ' Define the range of cells in columns J, K, and L
+    Set rng = ws.Range("J:L")
+
+    ' Disable screen updating to improve performance
+    Application.ScreenUpdating = False
+
+    ' Loop through each cell in the defined range to categorize positive and negative values
+    For Each cell In rng
+        If IsNumeric(cell.value) Then
+            If cell.value < 0 Then
+                If negativeValues Is Nothing Then
+                    Set negativeValues = cell
+                Else
+                    Set negativeValues = Union(negativeValues, cell)
+                End If
+            ElseIf cell.value > 0 Then
+                If positiveValues Is Nothing Then
+                    Set positiveValues = cell
+                Else
+                    Set positiveValues = Union(positiveValues, cell)
+                End If
+            End If
+        End If
+    Next cell
+
+    ' Apply formatting to positive values
+    If Not positiveValues Is Nothing Then
+        positiveValues.NumberFormat = "_($* #,##0.00_);_($* (#,##0.00);_($* ""-""??_);_(@_)"
+        positiveValues.HorizontalAlignment = xlLeft
+    End If
+
+    ' Apply formatting to negative values
+    If Not negativeValues Is Nothing Then
+        negativeValues.NumberFormat = "_($* #,##0.00_);[Red]_($* (#,##0.00);_($* ""-""??_);_(@_)"
+        negativeValues.Font.Bold = True
+        negativeValues.Font.Color = RGB(255, 0, 0) ' Red
+        negativeValues.HorizontalAlignment = xlLeft
+    End If
+
+    ' Remove "$ " from cells containing it
+    rng.Replace What:="$ ", Replacement:="", LookAt:=xlPart, SearchOrder:=xlByRows, MatchCase:=False
+
+    ' Automatically adjust the width of columns J, K, and L
+    rng.Columns.AutoFit
+
+    ' Enable screen updating
+    Application.ScreenUpdating = True
+End Sub
+
+
+Function AplicarNegritaACondicionesComerciales()
+    Dim ws As Worksheet
+    Dim rng As Range
+    Dim cell As Range
+
+    ' Referenciar la hoja activa
+    Set ws = ActiveSheet
+
+    ' Definir el rango de búsqueda en la hoja completa
+    Set rng = ws.UsedRange
+
+    ' Desactivar actualizaciones de pantalla para mejorar el rendimiento
+    Application.ScreenUpdating = False
+
+    ' Recorrer cada celda en el rango definido
+    For Each cell In rng
+        ' Verificar si la celda contiene una de las palabras clave
+        If InStr(1, UCase(cell.value), "COMMERCIAL TERMS AND CONDITIONS", vbTextCompare) > 0 _
+            Or InStr(1, UCase(cell.value), "CONDICIONES COMERCIALES", vbTextCompare) > 0 Then
+            ' Aplicar formato de texto en negrita
+            cell.Font.Bold = True
+        End If
+    Next cell
+
+    ' Activar actualizaciones de pantalla
+    Application.ScreenUpdating = True
+End Function
+
+
+Sub find_replace(text_to_find, text_to_replace As String)
+ 'Search and find data from below of items table'
+    Dim c As Range
+    Dim firstAddress As String
+
+    With Worksheets(1).Range("C1:L3000")
+        Set c = .Find(text_to_find, LookIn:=xlValues)
+        If Not c Is Nothing Then
+            firstAddress = c.Address
+            Do
+                c.value = text_to_replace
+                Set c = .FindNext(c)
+            Loop While Not c Is Nothing
+        End If
+    End With
+End Sub
+
+Sub Print_PDF(language, customer, project, version As String)
+'
+' Print_PDF
+'
+
+'
+    Application.PrintCommunication = False
+    With ActiveSheet.PageSetup
+        .PrintTitleRows = ""
+        .PrintTitleColumns = ""
+    End With
+    Application.PrintCommunication = True
+    ActiveSheet.PageSetup.PrintArea = ""
+    Application.PrintCommunication = False
+    With ActiveSheet.PageSetup
+        .LeftHeader = ""
+        .CenterHeader = ""
+        .RightHeader = ""
+        .LeftFooter = ""
+        .CenterFooter = ""
+        .RightFooter = ""
+        .LeftMargin = Application.InchesToPoints(0.7)
+        .RightMargin = Application.InchesToPoints(0.7)
+        .TopMargin = Application.InchesToPoints(0.75)
+        .BottomMargin = Application.InchesToPoints(0.75)
+        .HeaderMargin = Application.InchesToPoints(0.3)
+        .FooterMargin = Application.InchesToPoints(0.3)
+        .PrintHeadings = False
+        .PrintGridlines = False
+        .PrintComments = xlPrintSheetEnd
+        .PrintQuality = 600
+        .CenterHorizontally = False
+        .CenterVertically = False
+        .Orientation = xlPortrait
+        .Draft = False
+        .PaperSize = xlPaperLetter
+        .FirstPageNumber = xlAutomatic
+        .Order = xlDownThenOver
+        .BlackAndWhite = False
+        .Zoom = False
+        .FitToPagesWide = 1
+        .FitToPagesTall = False
+        .PrintErrors = xlPrintErrorsDisplayed
+        .OddAndEvenPagesHeaderFooter = False
+        .DifferentFirstPageHeaderFooter = False
+        .ScaleWithDocHeaderFooter = True
+        .AlignMarginsHeaderFooter = True
+        .EvenPage.LeftHeader.Text = ""
+        .EvenPage.CenterHeader.Text = ""
+        .EvenPage.RightHeader.Text = ""
+        .EvenPage.LeftFooter.Text = ""
+        .EvenPage.CenterFooter.Text = ""
+        .EvenPage.RightFooter.Text = ""
+        .FirstPage.LeftHeader.Text = ""
+        .FirstPage.CenterHeader.Text = ""
+        .FirstPage.RightHeader.Text = ""
+        .FirstPage.LeftFooter.Text = ""
+        .FirstPage.CenterFooter.Text = ""
+        .FirstPage.RightFooter.Text = ""
+    End With
+    Application.PrintCommunication = True
+    
+    ' Establece el nombre predeterminado del archivo PDF
+    Dim nombreArchivo As String
+    
+    If language = "Eng" Then
+        nombreArchivo = ThisWorkbook.Path & "\Proposal_" & customer & " (" & project & ") " & version & " .pdf"
+    Else
+        nombreArchivo = ThisWorkbook.Path & "\Propuesta_" & customer & " (" & project & ") " & version & " .pdf"
+    End If
+    
+    ' Muestra el cuadro de diálogo de guardar como con el nombre de archivo predeterminado
+    nombreArchivo = Application.GetSaveAsFilename(InitialFileName:=nombreArchivo, FileFilter:="PDF Files (*.pdf), *.pdf")
+
+    ' Comprueba si se ha seleccionado un nombre de archivo
+    If nombreArchivo <> "False" Then
+        ' Imprime la hoja activa en un archivo PDF con el nombre seleccionado
+        ActiveSheet.ExportAsFixedFormat Type:=xlTypePDF, Filename:=nombreArchivo, Quality:=xlQualityStandard
+
+        ' Selecciona la celda A1 al finalizar la impresión
+        Range("A1").Select
+    Else
+        MsgBox "No se ha seleccionado ningún nombre de archivo.", vbExclamation
+    End If
+End Sub
+
+Sub FormatGroupTextLabel()
+    Dim celda As Range
+    Dim valorF As Variant
+    Dim valorG As Variant
+    Dim limite As Range
+    
+    ' Definir el límite de detención del recorrido
+    Set limite = ActiveSheet.Cells.Find(What:="COMMERCIAL TERMS AND CONDITIONS", LookIn:=xlValues, LookAt:=xlPart, SearchOrder:=xlByRows, SearchDirection:=xlNext, MatchCase:=False)
+    If limite Is Nothing Then
+        Set limite = ActiveSheet.Cells.Find(What:="CONDICIONES COMERCIALES", LookIn:=xlValues, LookAt:=xlPart, SearchOrder:=xlByRows, SearchDirection:=xlNext, MatchCase:=False)
+    End If
+    
+    ' Verificar si se encontró el límite y ajustarlo una celda arriba
+    If Not limite Is Nothing Then
+        Set limite = limite.Offset(-1, 0)
+    End If
+    
+    ' Desactivar las alertas temporales
+    Dim originalAlertas As Boolean
+    originalAlertas = Application.DisplayAlerts
+    Application.DisplayAlerts = False
+    
+    ' Recorrer todas las celdas en la columna E desde la celda E29 hacia abajo hasta el límite
+    For Each celda In ActiveSheet.Range("E29:E" & limite.Row - 1)
+        If celda.value <> "" Then ' Verificar si la celda en la columna E no está vacía
+            valorF = celda.Offset(0, 1).value ' Valor de la celda adyacente en la columna F
+            valorG = celda.Offset(0, 2).value ' Valor de la celda adyacente en la columna G
+            
+            ' Verificar si no hay texto en las celdas adyacentes en las columnas F y G
+            If valorF = "" And valorG = "" Then
+                ' Aplicar el formato deseado a las celdas D a L en la misma fila
+                Range("D" & celda.Row & ":L" & celda.Row).Merge
+                Range("D" & celda.Row & ":L" & celda.Row).Interior.Color = RGB(0, 0, 0) ' Fondo negro
+                Range("D" & celda.Row & ":L" & celda.Row).Font.Color = RGB(255, 255, 255) ' Texto blanco
+                Range("D" & celda.Row & ":L" & celda.Row).Font.Bold = True ' Negritas
+            End If
+        End If
+    Next celda
+    
+    ' Volver a activar las alertas
+    Application.DisplayAlerts = originalAlertas
+End Sub
+
+
+Sub PutValidityPayment(validity As String, payment_terms As String)
+    Dim rng As Range
+    Dim cell As Range
+    
+    ' Define el rango en la columna C desde la celda C1 hasta la última celda con datos
+    Set rng = Range("C1:C" & Cells(Rows.Count, "C").End(xlUp).Row)
+    
+    ' Recorre cada celda en el rango
+    For Each cell In rng
+        ' Verifica si el contenido de la celda contiene "VALIDITY" o "VALIDEZ"
+        If InStr(1, UCase(cell.Value), "VALIDITY") > 0 Or InStr(1, UCase(cell.Value), "VALIDEZ") > 0 Then
+            ' Si encuentra una coincidencia, asigna el valor de 'validity' a dos columnas a la derecha
+            cell.Offset(0, 2).Value = validity
+        End If
+        ' Verifica si el contenido de la celda contiene "TERMS OF PAYMENT" o "CONDICIONES DE PAGO"
+        If InStr(1, UCase(cell.Value), "TERMS OF PAYMENT") > 0 Or InStr(1, UCase(cell.Value), "CONDICIONES DE PAGO") > 0 Then
+            ' Si encuentra una coincidencia, asigna el valor de 'payment_terms' a dos columnas a la derecha
+            cell.Offset(0, 2).Value = payment_terms
+        End If
+    Next cell
+End Sub

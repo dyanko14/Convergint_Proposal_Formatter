@@ -1,59 +1,113 @@
 Sub Convergint_Mex_Proposal()
-'Author: Dyanko Cisneros Mendoza'
-'Departmen: AV Pre-Sales'
-'Empresa: Convergint México'
-'Fecha: 2-Mayo-2024'
-'Versión: 1.0'
+'*******************************************************************************
+' Autor: Dyanko Cisneros Mendoza
+' Departamento: AV Pre-Sales
+' Empresa: Convergint México
+' Fecha: 29-Mayo-2024
+' Versión: 1.01
+'*******************************************************************************
+
+'*******************************************************************************
+' Initializing Data / Start
+'*******************************************************************************
 
 'Disable screen refresh
 Application.ScreenUpdating = False
 
-'Select language for Proposal'
-Dim language As String
-
-'Open Language Selection Popup
-Dim Pregunta As Integer
-Pregunta = MsgBox("Traducir propuesta en Inglés:", vbYesNo + vbInformation, "Convergint México")
-Select Case Pregunta
-    Case Is = 6 'Yes
-        language = "Eng"
-    Case Is = 7 'No
-        language = "Esp"
-    Case Else   'Cancel
-End Select
+'Variable declaration
+Dim ID As String
+Dim Fecha As String
+Dim Offer As String
+Dim Presented As String
+Dim Salesman As String
+Dim Phone As String
+Dim Email As String
+Dim Client As String
+Dim Contact As String
+Dim Address As String
+Dim Commercial_Header As String
+Dim Money As String
+Dim Item_Desc As String
+Dim Item_Type As String
+Dim Item_Brand As String
+Dim Item_Model As String
+Dim Item_Qty As String
+Dim Item_Subtotal As String
+Dim validity As String
+Dim payment_terms As String
+Dim Total_Group As String
+Dim customer As String
+Dim project As String
+Dim version As String
 
 'Show hidden columns'
 ActiveWindow.DisplayHeadings = True
 
-'Variable declaration
-Dim ID, Fecha, Offer, Presented, Salesman, Phone, Email As String
-Dim Client, Contact, Address, Commercial_Header, Money As String
-Dim Item_Desc, Item_Type, Item_Brand, Item_Model, Item_Qty, Item_Subtotal As String
-Dim validity, payment_terms As String
-Dim Total_Group As String
-Dim customer, project, version As String
-
-'Information to name of the pdf document to print'
+'Information to name the pdf document to be printed'
 customer = ActiveSheet.Range("I11").value
 project = ActiveSheet.Range("D25").value
 version = "v1.0"
 
-'Remove Seal Telecom Logo from Convergint Logo
+'*******************************************************************************
+' Initializing Data / End
+'*******************************************************************************
+
+'*******************************************************************************
+' User Input Information / Start
+'*******************************************************************************
+Dim language As String
+
+'Mostrar ventana emergente de selección de idioma
+Dim Pregunta As Integer
+Pregunta = MsgBox("¿Traducir propuesta al inglés?", vbYesNo + vbInformation, "Convergint México")
+
+Select Case Pregunta
+    Case Is = 6 'Sí
+        language = "Eng"
+    Case Is = 7 'No
+        language = "Esp"
+    Case Else   'Cancelar
+End Select
+'*******************************************************************************
+' User Input Information / End
+'*******************************************************************************
+
+'*******************************************************************************
+' Script / Start
+'*******************************************************************************
+
+'*******************************************************************************
+' Remove Seal Telecom Logo from Convergint Logo
+'*******************************************************************************
 If ActiveSheet.Range("C4").value = "" Then
-    '---
-    ActiveSheet.Shapes.Range(Array("Picture 1")).Select
-    Selection.ShapeRange.LockAspectRatio = msoFalse
-    Selection.ShapeRange.ScaleWidth 0.6695848911, msoFalse, msoScaleFromTopLeft
-    Selection.ShapeRange.PictureFormat.Crop.PictureWidth = 285
-    Selection.ShapeRange.PictureFormat.Crop.PictureHeight = 75
-    Selection.ShapeRange.PictureFormat.Crop.PictureOffsetX = 47
-    Selection.ShapeRange.PictureFormat.Crop.PictureOffsetY = 0
-    Range("C9:L9").Select
-    '---
+    ' Lock aspect ratio of the image
+    ActiveSheet.Shapes.Range(Array("Picture 1")).LockAspectRatio = msoFalse
+    
+    ' Scale the width of the image
+    ActiveSheet.Shapes.Range(Array("Picture 1")).ScaleWidth 0.6695848911, msoFalse, msoScaleFromTopLeft
+    
+    ' Crop the image width
+    ActiveSheet.Shapes.Range(Array("Picture 1")).PictureFormat.Crop.PictureWidth = 285
+    
+    ' Crop the image height
+    ActiveSheet.Shapes.Range(Array("Picture 1")).PictureFormat.Crop.PictureHeight = 75
+    
+    ' Offset the image horizontally
+    ActiveSheet.Shapes.Range(Array("Picture 1")).PictureFormat.Crop.PictureOffsetX = 47
+    
+    ' Offset the image vertically
+    ActiveSheet.Shapes.Range(Array("Picture 1")).PictureFormat.Crop.PictureOffsetY = 0
+    
+    ' Select range C9:L9
+    ActiveSheet.Range("C9:L9").Select
+    
+    ' Set the value of C4 to 1
     ActiveSheet.Range("C4").value = 1
 End If
 
-'Assign value of the variables according to the selected language
+'*******************************************************************************
+' Change text of the proposal according to the selected language
+'*******************************************************************************
 If language = "Eng" Then
     ID = "OPPORTUNITY ID:"
     Fecha = "DATE:"
@@ -69,7 +123,7 @@ If language = "Eng" Then
     Contact = "Contact:"
     Address = "Address:"
     '------'
-    Commercial_Header = "On behalf of the Convergint global network, I would like to personally thank you for providing us the opportunity to present this proposal that addresses your needs in both solutions and services. We are confident that this costeffective proposal describes the comprehensive and customized solution to meet your current and future needs. As your single point of contact, please do not hesitate to contact me if you have any additional questions. Thank you again for trusting Convergint as your partner."
+    Commercial_Header = "On behalf of the Convergint global network, I would like to personally thank you for providing us the opportunity to present this proposal that addresses your needs in both solutions and services. We are confident that this cost-effective proposal describes the comprehensive and customized solution to meet your current and future needs. As your single point of contact, please do not hesitate to contact me if you have any additional questions. Thank you again for trusting Convergint as your partner."
     '------'
     Money = "CURRENCY:"
     '------'
@@ -95,7 +149,7 @@ If language = "Eng" Then
     ReemplazarPalabras "TIPO: HW=HARDWARE / SW=SOFTWARE  / SV=SERVICE", "TYPE: HW=HARDWARE / SW=SOFTWARE / SV=SERVICE"
     ReemplazarPalabras "TIEMPO DE ENTREGA", "LEAD TIME"
     ReemplazarPalabras "POR CONFIRMAR", "To be defined"
-    ReemplazarPalabras "CONDICIONES DE PAGO: ", "TERMS OF PAYMENT:"
+    ReemplazarPalabras "CONDICIONES DE PAGO: ", "TERMS OF PAYMENT:"
     ReemplazarPalabras "DE COMUN ACUERDO", "To be defined"
     '------'
     ReemplazarPalabras "VALIDEZ:", "VALIDITY:"
@@ -200,126 +254,140 @@ Else 'Spanish
     ReemplazarPalabras "Total do Grupo", "Total del Grupo"
     ReemplazarPalabras "Total of Group", "Total del Grupo"
 
-End If 'Spanish Language'
+End If
 
-    'Encabezado'
-    ActiveSheet.Range("I2").value = ID
-    ActiveSheet.Range("I3").value = Fecha
+'*******************************************************************************
+' Encabezado
+'*******************************************************************************
+ActiveSheet.Range("I2").value = ID
+ActiveSheet.Range("I3").value = Fecha
+
+'*******************************************************************************
+' Commercial Offer Header
+'*******************************************************************************
+ActiveSheet.Range("C9").value = Offer
+ActiveSheet.Range("C11").value = Presented
+ActiveSheet.Range("C12").value = Salesman
+ActiveSheet.Range("C13").value = Phone
+ActiveSheet.Range("C14").value = Email
+'------'
+ActiveSheet.Range("H11").value = Client
+ActiveSheet.Range("H12").value = Contact
+ActiveSheet.Range("H13").value = Phone
+ActiveSheet.Range("H14").value = Email
+'------'
+ActiveSheet.Range("C17").value = Commercial_Header
+'------'
+ActiveSheet.Range("C18").value = ""
+ActiveSheet.Range("C21").value = "CONVERGINT MÉXICO"
+ActiveSheet.Range("J24").value = Fecha
+ActiveSheet.Range("K24").value = Money
+'------'
+ActiveSheet.Range("E28").value = Item_Desc
+ActiveSheet.Range("F28").value = Item_Type
+ActiveSheet.Range("G28").value = Item_Brand
+ActiveSheet.Range("H28").value = Item_Model
+ActiveSheet.Range("I28").value = Item_Qty
+ActiveSheet.Range("L28").value = Item_Subtotal
+
+'*******************************************************************************
+' Customer Info
+'*******************************************************************************
+ActiveSheet.Range("I3:K3").Font.Bold = True
+ActiveSheet.Range("C11:L17").Font.Size = 11
+
+'*******************************************************************************
+' Apply format
+'*******************************************************************************
+'Cancel bold text to all ID values on Colum'
+ActiveSheet.Range("I11:I15").Font.Bold = False
+
+'Apply format'
+If ActiveSheet.Range("C5").value = "" Then
+    '------'
+    ActiveSheet.Range("H15").Copy
+    ActiveSheet.Range("H14").PasteSpecial xlPasteAll
+    ActiveSheet.Range("H15").value = ""
     
-    'Commercial Offer Header'
-    ActiveSheet.Range("C9").value = Offer
-    ActiveSheet.Range("C11").value = Presented
-    ActiveSheet.Range("C12").value = Salesman
-    ActiveSheet.Range("C13").value = Phone
-    ActiveSheet.Range("C14").value = Email
     '------'
-    ActiveSheet.Range("H11").value = Client
-    ActiveSheet.Range("H12").value = Contact
-    ActiveSheet.Range("H13").value = Phone
-    ActiveSheet.Range("H14").value = Email
+    ActiveSheet.Range("I15:K15").Copy
+    ActiveSheet.Range("I14:K14").PasteSpecial xlPasteAll
+    ActiveSheet.Range("I15:K15").value = ""
     '------'
-    ActiveSheet.Range("C17").value = Commercial_Header
-    '------'
-    ActiveSheet.Range("C18").value = ""
-    ActiveSheet.Range("C21").value = "CONVERGINT MÉXICO"
-    ActiveSheet.Range("J24").value = Fecha
-    ActiveSheet.Range("K24").value = Money
-    '------'
-    ActiveSheet.Range("E28").value = Item_Desc
-    ActiveSheet.Range("F28").value = Item_Type
-    ActiveSheet.Range("G28").value = Item_Brand
-    ActiveSheet.Range("H28").value = Item_Model
-    ActiveSheet.Range("I28").value = Item_Qty
-    ActiveSheet.Range("L28").value = Item_Subtotal
-    '------'
+    ActiveSheet.Range("C5").value = 1
     
-    '------Customer Info'
-    ActiveSheet.Range("I3:K3").Font.Bold = True
-    ActiveSheet.Range("C11:L17").Font.Size = 11
-    
-    'Cancel bold text to all ID values on Colum'
-    ActiveSheet.Range("I11:I15").Font.Bold = False
-    
-    'Apply format'
-    If ActiveSheet.Range("C5").value = "" Then
-        '------'
-        ActiveSheet.Range("H15").Copy
-        ActiveSheet.Range("H14").PasteSpecial xlPasteAll
-        ActiveSheet.Range("H15").value = ""
-        
-        '------'
-        ActiveSheet.Range("I15:K15").Copy
-        ActiveSheet.Range("I14:K14").PasteSpecial xlPasteAll
-        ActiveSheet.Range("I15:K15").value = ""
-        '------'
-        ActiveSheet.Range("C5").value = 1
-        
-        If language = "Eng" Then
-            ActiveSheet.Range("H14").value = "Email"
-        Else
-            ActiveSheet.Range("H14").value = "Correo"
-        End If
+    If language = "Eng" Then
+        ActiveSheet.Range("H14").value = "Email"
+    Else
+        ActiveSheet.Range("H14").value = "Correo"
     End If
-    
-    '------Item Colum'
-    ActiveSheet.Columns("C:C").Font.Bold = True
-    
-    'Apply Left Alignment to Columns'
-    ActiveSheet.Columns("D:D").HorizontalAlignment = xlLeft 'P/N
-    ActiveSheet.Columns("G:G").HorizontalAlignment = xlLeft 'Manufacturer
-    ActiveSheet.Columns("H:H").HorizontalAlignment = xlLeft 'Model
-    
-    'Apply Width Aufit Text Alignment to Columns'
-    ActiveSheet.Columns("D:D").AutoFit 'P/N
-    ActiveSheet.Columns("G:G").AutoFit 'Manufacturer
-    ActiveSheet.Columns("H:H").AutoFit 'Model
-    
-    'Apply format to items Row'
-    ActiveSheet.Range("C28:L28").Font.Bold = True
-    ActiveSheet.Range("C28:L28").HorizontalAlignment = xlCenter
-      
-    If ActiveSheet.Range("I13").value = 0 Then 'Customer Email Text
-       ActiveSheet.Range("I13:K13").value = ""
-    End If
-    
-    'Apply format to all items price numeric values
-    FormatColumnsJKL
-    
-    'Apply format to Text'
-    AplicarNegritaACondicionesComerciales
-    FormatGroupTextLabel
-    
-    'Date Text'
-    ActiveSheet.Range("J3").Font.Bold = False
-    
-    'Delete Consolidated Cells'
-    
-    '------Sales Person EMail'
-    ActiveSheet.Range("D14:F14").Font.Color = vbBlue
-    ActiveSheet.Range("D14:F14").Font.Underline = xlUnderlineStyleSingle
-    '------Client Person EMail'
-    ActiveSheet.Range("I14:K14").Font.Color = vbBlue
-    ActiveSheet.Range("I14:K14").Font.Underline = xlUnderlineStyleSingle
+End If
 
+'------Item Colum'
+ActiveSheet.Columns("C:C").Font.Bold = True
 
-    'Open PDF Print Selection Popup
-    Dim Pregunta2 As Integer
-    Pregunta2 = MsgBox("¿Imprimir documento en pdf?", vbYesNoCancel + vbInformation, "Convergint México")
-    Select Case Pregunta2
-        Case Is = 6
-            Print_PDF language, customer, project, version
-            'Final message'
-            MsgBox ("Proceso terminado, favor de revisar condiciones comerciales")
-        Case Is = 7
-            'Final message'
-            MsgBox ("Proceso terminado, favor de revisar condiciones comerciales")
-        Case Else
-    End Select
+'Apply Left Alignment to Columns'
+ActiveSheet.Columns("D:D").HorizontalAlignment = xlLeft 'P/N
+ActiveSheet.Columns("G:G").HorizontalAlignment = xlLeft 'Manufacturer
+ActiveSheet.Columns("H:H").HorizontalAlignment = xlLeft 'Model
 
+'Apply Width Aufit Text Alignment to Columns'
+ActiveSheet.Columns("D:D").AutoFit 'P/N
+ActiveSheet.Columns("G:G").AutoFit 'Manufacturer
+ActiveSheet.Columns("H:H").AutoFit 'Model
+
+'Apply format to items Row'
+ActiveSheet.Range("C28:L28").Font.Bold = True
+ActiveSheet.Range("C28:L28").HorizontalAlignment = xlCenter
+  
+If ActiveSheet.Range("I13").value = 0 Then 'Customer Email Text
+   ActiveSheet.Range("I13:K13").value = ""
+End If
+
+'Apply format to all items price numeric values
+FormatColumnsJKL
+
+'Apply format to Text'
+AplicarNegritaACondicionesComerciales
+FormatGroupTextLabel
+
+'Date Text'
+ActiveSheet.Range("J3").Font.Bold = False
+
+'Delete Consolidated Cells'
+'------Sales Person EMail'
+ActiveSheet.Range("D14:F14").Font.Color = vbBlue
+ActiveSheet.Range("D14:F14").Font.Underline = xlUnderlineStyleSingle
+'------Client Person EMail'
+ActiveSheet.Range("I14:K14").Font.Color = vbBlue
+ActiveSheet.Range("I14:K14").Font.Underline = xlUnderlineStyleSingle
+
+'*******************************************************************************
+' Open PDF Print Selection Popup
+'*******************************************************************************
+Dim Pregunta2 As Integer
+Pregunta2 = MsgBox("¿Imprimir documento en pdf?", vbYesNoCancel + vbInformation, "Convergint México")
+Select Case Pregunta2
+    Case Is = 6
+        Print_PDF language, customer, project, version
+        'Final message'
+        MsgBox ("Proceso terminado, favor de revisar condiciones comerciales")
+    Case Is = 7
+        'Final message'
+        MsgBox ("Proceso terminado, favor de revisar condiciones comerciales")
+    Case Else
+End Select
+
+'*******************************************************************************
+' Data Finalization
+'*******************************************************************************
 'Reactivate screen refresh
 Application.ScreenUpdating = True
 
 End Sub
+'*******************************************************************************
+' Script / End
+'*******************************************************************************
 
 Sub ReemplazarPalabras(palabraBuscar As String, palabraReemplazar As String)
     Dim ws As Worksheet
@@ -595,14 +663,14 @@ Sub PutValidityPayment(validity As String, payment_terms As String)
     ' Recorre cada celda en el rango
     For Each cell In rng
         ' Verifica si el contenido de la celda contiene "VALIDITY" o "VALIDEZ"
-        If InStr(1, UCase(cell.Value), "VALIDITY") > 0 Or InStr(1, UCase(cell.Value), "VALIDEZ") > 0 Then
+        If InStr(1, UCase(cell.value), "VALIDITY") > 0 Or InStr(1, UCase(cell.value), "VALIDEZ") > 0 Then
             ' Si encuentra una coincidencia, asigna el valor de 'validity' a dos columnas a la derecha
-            cell.Offset(0, 2).Value = validity
+            cell.Offset(0, 2).value = validity
         End If
         ' Verifica si el contenido de la celda contiene "TERMS OF PAYMENT" o "CONDICIONES DE PAGO"
-        If InStr(1, UCase(cell.Value), "TERMS OF PAYMENT") > 0 Or InStr(1, UCase(cell.Value), "CONDICIONES DE PAGO") > 0 Then
+        If InStr(1, UCase(cell.value), "TERMS OF PAYMENT") > 0 Or InStr(1, UCase(cell.value), "CONDICIONES DE PAGO") > 0 Then
             ' Si encuentra una coincidencia, asigna el valor de 'payment_terms' a dos columnas a la derecha
-            cell.Offset(0, 2).Value = payment_terms
+            cell.Offset(0, 2).value = payment_terms
         End If
     Next cell
 End Sub
